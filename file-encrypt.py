@@ -81,7 +81,7 @@ def encrypt_file(filepath):
   output_filename = file_name + '.mycrypt'
   
   with open(output_filename, 'w') as outfile:  
-    outfile.write(json.dumps(data, outfile))
+    outfile.write(json.dumps(data))
   
     return (key, output_filename)
   
