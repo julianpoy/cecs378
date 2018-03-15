@@ -9,7 +9,8 @@ from cryptography.hazmat.primitives.ciphers import (
 )
 
 def Myencrypt(plaintext, key):
-  iv = os.urandom(16)
+  iv_length = 16
+  iv = os.urandom(iv_length)
 
   encryptor = Cipher(
       algorithms.AES(key),
@@ -22,7 +23,8 @@ def Myencrypt(plaintext, key):
   return (iv, ciphertext, encryptor.tag)
     
 def MyfileEncrypt(filepath):
-  key = os.urandom(32)
+  key_length = 32
+  key = os.urandom(key_length)
   
   file_name = os.path.splitext(filepath)[0]
   file_extension = os.path.splitext(filepath)[1]
