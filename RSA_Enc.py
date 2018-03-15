@@ -70,7 +70,6 @@ def MyfileDecrypt(filepath, key):
   with open(filepath, 'r') as f:
   #Loads the json data format that was passed in from encryption
     data = json.load(f)
-    
     #Decodes the data from base 64 value of the iv, ciphertext and tag
     iv = base64.b64decode(data['iv'])
     ciphertext = base64.b64decode(data['ciphertext_base64'])
@@ -98,26 +97,26 @@ def MyRSAEncrypt(filepath, RSA_PublicKey_filepath):
       password = bytes(password, 'utf-8')
   #opens the rsa key filepath and reads the private key
   with open(RSA_PublicKey_filepath, 'rb') as key_file:
-    private_key = serialization.load_pem_private_key(
-      key_file.read(),
-      password,
-      backend=default_backend()
-    )
-  #closes the open file  
-  key_file.close()
-  #retireves the public key from the private retrieved (One thing I'm unsure of)
-  public_key = private_key.public_key()
-  #encrypts the key generated from myfileEncrypt with rsa public key
-  RSACipher = public_key.encrypt(
-    key,
-    padding.OAEP(
-      mgf=padding.MGF1(algorithm=hashes.SHA256()),
-      algorithm=hashes.SHA256(),
-      label=None
+      private_key = serialization.load_pem_private_key(
+          key_file.read(),
+          password,
+          backend=default_backend()
       )
-    )
-  #returns the values
-  return (RSACipher, ciphertext, tag, iv, file_extension)
+      #closes the open file  
+      key_file.close()
+      #retireves the public key from the private retrieved (One thing I'm unsure of)
+      public_key = private_key.public_key()
+      #encrypts the key generated from myfileEncrypt with rsa public key	  
+      RSACipher = public_key.encrypt(
+        key,
+        padding.OAEP(
+          mgf=padding.MGF1(algorithm=hashes.SHA1()),
+          algorithm=hashes.SHA1(),
+          label=None
+          )
+        )
+      #returns the values
+      return (RSACipher, ciphertext, tag, iv, file_extension)
          
 def rsa_encrypt_file(filepath, RSA_PublicKey_filepath):
   #Retrieves the file name from the file path
@@ -143,79 +142,66 @@ def rsa_encrypt_file(filepath, RSA_PublicKey_filepath):
     #returns the key and the new file name
     return (RSACipher, output_filename)
 
-def MyfileRSADecrypt(filepath, RSACipher, RSA_Privatekey_filepath):
-  #retrieves the file name from the encrypted file
-  file_name = os.path.splitext(filepath)[0]
-  #Checks for a password to the rsa key file
+def MyFileRSADecrypt(filepath, RSACipher, RSA_Privatekey_filepath):
+  #checks for a password to access the rsa key pair
   password = input("Input your password for accessing your public key or leave blank if you have none")
   if password == "":
       password = None
   else:
-      password = bytes(password, 'utf-8')  
-  #Reads the private key from the rsa key file
+      password = bytes(password, 'utf-8')
+  #opens the rsa key filepath and reads the private key
   with open(RSA_Privatekey_filepath, 'rb') as key_file:
-    private_key = serialization.load_pem_private_key(
-      key_file.read(),
-      password,
-      backend=default_backend()
-    )
-  key_file.close()
-  #Uses the private key to decrypt the RSACipher so that the key to the data can be retrieved
-  key = private_key.decrypt(
-      RSACipher,
-      padding.OAEP(
-          mgf=padding.MGF1(algorithm=hashes.SHA256()),
-          algorithm=hashes.SHA256(),
+      private_key = serialization.load_pem_private_key(
+          key_file.read(),
+          password,
+          backend=default_backend()
+      )
+      #closes the open file  
+      key_file.close()
+      #encrypts the key generated from myfileEncrypt with rsa public key	  
+      key = private_key.decrypt(
+        RSACipher,
+        padding.OAEP(
+          mgf=padding.MGF1(algorithm=hashes.SHA1()),
+          algorithm=hashes.SHA1(),
           label=None
           )
-      )  
-  
-  #Opens file and reads the data as a json file format
-  with open(filepath, 'r') as f:
-  #Loads the json data format that was passed in from encryption
-    data = json.load(f)
-    #Decodes the data from base 64 value of the iv, ciphertext and tag
-    iv = base64.b64decode(data['iv'])
-    ciphertext = base64.b64decode(data['ciphertext_base64'])
-    tag = base64.b64decode(data['tag'])
-    #Calls the mydecrypt method of the plaintext
-    plaintext = Mydecrypt(ciphertext, tag, iv, key)
-    #Creates the file name and extensino that was stored
-    output_filename = file_name + data['file_extension']
-    #Writes back to the file in binary specified by the file name
-    f = open(output_filename, 'wb')
-    f.write(plaintext)
-    f.close()
-    #returns the name of the decrypted file
-    return output_filename
+        )
+      #returns the values
+      return (key)
+		
+def rsaDecrypt(filepath, RSACipher, RSA_Privatekey_filepath):
+  #Checks for a password to the rsa key file
+	key = MyFileRSADecrypt(filepath, RSACipher, RSA_Privatekey_filepath)			
+	return MyfileDecrypt(filepath, key)
     
     
 ## UI
-if '--rsaencrypt' in sys.argv and '--rsakeypath' in sys.argv:
+if '--encrypt' in sys.argv and '--rsakeypath' in sys.argv:
   #takes in the file to be rsa encrypted
-  filepath = sys.argv[sys.argv.index('--rsaencrypt') + 1]
+  filepath = sys.argv[sys.argv.index('--encrypt') + 1]
   #The rsa public key filepath
   RSA_PublicKey_filepath = sys.argv[sys.argv.index('--rsakeypath') + 1]
   #calls the rsa encryption method
   RSACipher, output_filename = rsa_encrypt_file(filepath, RSA_PublicKey_filepath)
-  #os.remove(filepath)
+  os.remove(filepath)
   #prints out the key and the outputted file in base64 so no data is lost
   print("RSACipher: ", base64.b64encode(RSACipher).decode('utf-8'))
   print("Output file: ", output_filename)
 #Checks for --rsaencrypt and --rsakeypath and --rsacipher in the command line arguments
-elif '--rsadecrypt' in sys.argv and '--rsacipher' in sys.argv and '--rsakeypath' in sys.argv:
+elif '--decrypt' in sys.argv and '--rsacipher' in sys.argv and '--rsakeypath' in sys.argv:
   #takes in the file to be decrypted
-  filepath = sys.argv[sys.argv.index('--rsadecrypt') + 1]
+  filepath = sys.argv[sys.argv.index('--decrypt') + 1]
   #decodes the rsacipher from base64
   RSACipher = base64.b64decode(sys.argv[sys.argv.index('--rsacipher') + 1])
   #takes in the file path to the private key
   RSA_Privatekey_filepath = sys.argv[sys.argv.index('--rsakeypath') + 1]
   #retrieves the new outputted file name
-  output_filename = MyfileRSADecrypt(filepath, RSACipher, RSA_Privatekey_filepath)
+  output_filename = rsaDecrypt(filepath, RSACipher, RSA_Privatekey_filepath)
   #removes the encrypted file
   os.remove(filepath)
   #displays the new outputted file
   print("Output file: ", output_filename)
 #If the command was enacted wrong it will print out the correct way 
 else:
-  print("for rsa file encryption\n[--rsaencrypt {filename} --rsakeypath {keyfilename}] or [--rsadecrypt {filename} --rsakeypath (keyfilename) --rsacipher {rsakey}] is required")
+  print("for rsa file encryption\n[--encrypt {filename} --rsakeypath {keyfilename}] or [--decrypt {filename} --rsakeypath (keyfilename) --rsacipher {printed key}] is required")
