@@ -1,4 +1,6 @@
-# cecs378
+# CECS 378
+
+## Encrypting and decrypting files with basic GCM
 
 file_encrypt.py includes the first part of the file encryption lab. You can encrypt a file with the following command:
 
@@ -7,3 +9,5 @@ file_encrypt.py includes the first part of the file encryption lab. You can encr
 You can decrypt an encrypted file (.mycrypt filetype) with the following command:
 
 `python3 file-encrypt.py --decrypt {filename} --key {key}`
+
+## Encrypting and decrypting files using GCM and RSA
