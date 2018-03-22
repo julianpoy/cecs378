@@ -149,6 +149,7 @@ def rsa_encrypt_file(filepath, RSA_PublicKey_filepath):
   data['tag'] = base64.b64encode(tag).decode('utf-8')
   data['iv'] = base64.b64encode(iv).decode('utf-8')
   data['file_extension'] = file_extension
+  data['key'] = base64.b64encode(RSACipher).decode('utf-8')
   
   #Creates the new name for the file using the original file name with a customized ext
   output_filename = file_name + '.rsamycrypt'
