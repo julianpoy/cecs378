@@ -23,3 +23,11 @@ You can decrypt an encrypted file (.mycrypt filetype) with the following command
 Note that this will NOT return the raw key to you, unlike with basic GCM. The raw key is encrypted with RSA and is then stored within the file.
 
 Additionally, note that several of the methods have been adapted to support RSA. file-encrypt-rsa.py and file-encrypt.py are not backwards compatible.
+
+#### Contributors:
+- Julian Poyourow
+-- Updated methods to use RSA
+- Kacy Rowe
+-- Updated RSA output cipher to be stored and read from JSON .mycrypt
+- Christopher Meyer & Michael Wolf
+-- Collaborated when figuring out RSA enc/dec from (Python Hazmat)[https://cryptography.io/en/latest/hazmat/primitives/asymmetric/rsa/]
