@@ -14,11 +14,11 @@ You can decrypt an encrypted file (.mycrypt filetype) with the following command
 
 file-encrypt-rsa.py includes the second part of the file encryption lab. You can encrypt a file using RSA with the following command:
 
-`python3 file-encrypt-rsa.py --encrypt {filename}`--key {rsa public key path}
+`python3 file-encrypt-rsa.py --encrypt {filename} --key {rsa public key path}`
 
 You can decrypt an encrypted file (.mycrypt filetype) with the following command:
 
-`python3 file-encrypt-rsa.py --decrypt {filename} --key {rsa private key path}
+`python3 file-encrypt-rsa.py --decrypt {filename} --key {rsa private key path}`
 
 Note that this will NOT return the raw key to you, unlike with basic GCM. The raw key is encrypted with RSA and is then stored within the file.
 
