@@ -5,6 +5,8 @@ import base64
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, hmac
+from cryptography.exceptions import(
+        AlreadyFinalized, UnsupportedAlgorithm, _Reasons)
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.ciphers import (
@@ -59,7 +61,13 @@ def MyfileEncryptMAC(filepath):
   
   return(ciphertext, iv, tag, key, h, file_extension)
   
-  
+def update(self,data):
+    if self._ctx is None:
+        raise AlreadyFinalized("Content already finalized!")
+    if not isistance(data, bytes):
+        raise TypeError("data must be bytes!")
+    self._ctx.update(data)
+        
   #return (C, IV, tag, Enckey, HMACKey, ext)
 def MyfileEncrypt(filepath):
   #Generates the key
