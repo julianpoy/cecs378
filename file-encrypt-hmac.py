@@ -63,11 +63,27 @@ def MyfileEncryptMAC(filepath):
   
 def update(self,data):
     if self._ctx is None:
-        raise AlreadyFinalized("Content already finalized!")
+        raise AlreadyFinalized("Content was already finalized!")
     if not isistance(data, bytes):
         raise TypeError("data must be bytes!")
     self._ctx.update(data)
-        
+    
+def finalize(self):
+    if self._ctx is None:
+        raise AlreadyFinalized("Content was already finalized!")
+    digest = self._ctx.finalize()
+    self._ctx = None
+    return digest
+
+def verify(self,signature):
+    if not isinstance(signature, bytes):
+        raise TypeError("Signature must be bytes!")
+    if self._ctx is None:
+        raise AlreadyFinalized("Content was already finalized!")
+    
+    ctx, self._ctx = self._ctx, None
+    ctx.verify(signature)
+
   #return (C, IV, tag, Enckey, HMACKey, ext)
 def MyfileEncrypt(filepath):
   #Generates the key
