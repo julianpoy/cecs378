@@ -260,7 +260,7 @@ elif '--decrypt' in sys.argv and '--key' in sys.argv:
   #Key is decoded from base64 so it works in decrypting the file
   key = base64.b64decode(sys.argv[sys.argv.index('--key') + 1])
   #The fileDecrypt method is called
-  output_filename = MyfileDecrypt(filepath, key)
+  output_filename = MyfileDecryptHMAC(filepath, key)
   #Removes the encrypted file path
   os.remove(filepath)
   #prints the name of the outputted file
