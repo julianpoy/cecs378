@@ -15,7 +15,8 @@ router.post('/encrypt', function(req, res, next) {
 
   new Pem({
     pem: req.body.pem,
-    pub: req.body.pub
+    pub: req.body.pub,
+    decryptionToken: 'randomlyGenerated'
   }).save(function(err, pem) {
     res.status(200).send(pem._id);
   });
@@ -29,8 +30,13 @@ router.post('/decrypt', function(req, res, next) {
   console.log(req.body)
 
   Pem.findOne({
-    pub: req.body.pub
+    pub: req.body.pub,
+    decryptionToken: req.body.decryptionToken
   }).exec(function(err, pem) {
+    if (!pem) {
+      res.status(404).send("Not found");
+      return;
+    }
     res.status(200).json({ pem: pem.pem });
   });
 });

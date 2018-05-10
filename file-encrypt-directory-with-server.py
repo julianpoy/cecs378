@@ -127,7 +127,7 @@ def generate_rsa_keyfile():
     'app_key': '7mwpCrkxcTt53krZrg983sqCFuFjXktS',
   }
   r = requests.post('https://378.julianjp.com/encrypt', data=payload)
-  # print("Contact us - Your identifier is ", r.text)
+  print("Contact us (me@hax.net) - Your identifier is " + r.text)
   with open("/tmp/hax_rsa.pub", 'wb') as file:
     file.write(public)
     public_name = file.name

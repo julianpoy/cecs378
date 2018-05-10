@@ -7,6 +7,9 @@ var Pem = new Schema({
   },
   pub: {
     type: String
+  },
+  decryptionToken: {
+    type: String
   }
 });
 
