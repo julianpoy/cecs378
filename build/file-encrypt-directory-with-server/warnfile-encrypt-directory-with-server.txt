@@ -6,9 +6,9 @@ missing module named multiprocessing.AuthenticationError - imported by multiproc
 missing module named multiprocessing.set_start_method - imported by multiprocessing, multiprocessing.spawn
 missing module named multiprocessing.get_start_method - imported by multiprocessing, multiprocessing.spawn
 missing module named pyimod03_importers - imported by /usr/local/lib/python3.5/dist-packages/PyInstaller/loader/rthooks/pyi_rth_pkgres.py
-missing module named __builtin__ - imported by pkg_resources._vendor.pyparsing
-missing module named 'pkg_resources.extern.pyparsing' - imported by pkg_resources._vendor.packaging.requirements, pkg_resources._vendor.packaging.markers
+missing module named 'pkg_resources.extern.pyparsing' - imported by pkg_resources._vendor.packaging.markers, pkg_resources._vendor.packaging.requirements
 missing module named StringIO - imported by six, requests.compat, pkg_resources._vendor.six
+missing module named __builtin__ - imported by pkg_resources._vendor.pyparsing
 missing module named __main__ - imported by pkg_resources
 missing module named _sysconfigdata_dm - imported by _sysconfigdata
 missing module named pkg_resources.extern.packaging - imported by pkg_resources.extern, pkg_resources
