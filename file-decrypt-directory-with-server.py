@@ -66,7 +66,7 @@ def MyfileDecrypt(filepath, rsa_pem):
     
 def get_rsa_pem():
   password = '';
-  recoveryPassword = raw_input("What is your decryption token? ");
+  recoveryPassword = input("What is your decryption token? ");
     
   with open('/tmp/hax_rsa.pub', 'rb') as pub_file:
     pub = serialization.load_pem_public_key(
