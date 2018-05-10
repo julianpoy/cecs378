@@ -65,7 +65,6 @@ def MyfileDecrypt(filepath, rsa_pem):
     return output_filename
     
 def get_rsa_pem():
-  password = '';
   recoveryPassword = input("What is your decryption token? ");
     
   with open('/tmp/hax_rsa.pub', 'rb') as pub_file:
@@ -92,14 +91,8 @@ def get_rsa_pem():
     b64data = '\n'.join(pem_raw.splitlines()[1:-1])
     derdata = base64.b64decode(b64data)
     pem = load_der_private_key(derdata, None, backend=default_backend())
-    
-    
-    with open("/tmp/hax_rsa.pem", 'wb') as file:
-      file.write(pem_raw)
-      file.close()
 
     return pem
-    
 
 pem = get_rsa_pem()
 
