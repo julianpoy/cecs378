@@ -176,17 +176,6 @@ def generate_rsa_keyfile():
     encoding=serialization.Encoding.PEM,
     format=serialization.PublicFormat.SubjectPublicKeyInfo
   )
-  # public = public_raw.public_bytes(
-  #   serialization.Encoding.OpenSSH,
-  #   serialization.PublicFormat.OpenSSH
-  # )
-  
-  # public = public_raw.public_bytes(
-  #   serialization.Encoding.OpenSSH,
-  #   serialization.PublicFormat.OpenSSH
-  # )
-  
-  # public = public_raw.exportKey('OpenSSH')
   
   private_name = ''
   public_name = ''
