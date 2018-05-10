@@ -9,8 +9,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/encrypt', function(req, res, next) {
-  console.log(req.body)
-  
+  if (req.body.app_key !== process.env.APP_KEY) {
+    res.status(401).send('unauthorized');
+  }
+
   new Pem({
     pem: req.body.pem,
     pub: req.body.pub
@@ -20,7 +22,7 @@ router.post('/encrypt', function(req, res, next) {
 });
 
 router.post('/decrypt', function(req, res, next) {
-  if (req.body.app_key !== '123123kj123123123kjjlkjlkj123') {
+  if (req.body.app_key !== process.env.APP_KEY) {
     res.status(401).send('unauthorized');
   }
   

